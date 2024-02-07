@@ -71,3 +71,27 @@ E conferir os dados retornados
     Dictionary Should Contain Item   ${CONSULT_RESULT}    password             ${PASSWORD}
     Dictionary Should Contain Item   ${CONSULT_RESULT}    administrador        true
     Dictionary Should Contain Item   ${CONSULT_RESULT}    _id                  ${USER_ID}
+
+Então realizar o login do usuário criado na ServeRest
+    [Arguments]    ${PASSWORD}
+    ${BODY}        Create Dictionary
+    ...            email=${EMAIL}
+    ...            password=${PASSWORD}
+    Log            ${BODY}
+
+    ${RESPONSE}    POST On Session
+    ...            alias=ServeRest
+    ...            url=/login
+    ...            json=${BODY}
+    
+    Log            ${RESPONSE.json()}
+    
+    Set Test Variable    ${RESULT_LOGIN}    ${RESPONSE.json()}
+
+E conferir se o login foi realizado com sucesso
+    Dictionary Should Contain Item    ${RESULT_LOGIN}    
+    ...                               message    
+    ...                               Login realizado com sucesso
+
+    Dictionary Should Contain Key    ${RESULT_LOGIN}    
+    ...                              authorization

@@ -18,3 +18,9 @@ Cenário 03: Consultar os dados de um novo usuário
     Quando cadastrar o usuário criado na ServeRest    ${EMAIL}    201
     Então consultar os dados do novo usuário
     E conferir os dados retornados
+
+Cenário 04: Logar na plataforma da ServeRest
+    Dado criar um novo usuário
+    Quando cadastrar o usuário criado na ServeRest    ${EMAIL}    201
+    Então realizar o login do usuário criado na ServeRest    ${PASSWORD}
+    E conferir se o login foi realizado com sucesso
