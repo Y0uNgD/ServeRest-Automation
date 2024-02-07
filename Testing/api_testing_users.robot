@@ -12,3 +12,9 @@ Cenário 02: Cadastrar um usuário já existente
     Quando cadastrar o usuário criado na ServeRest    ${EMAIL}    201
     Então repetir o cadastro do usuário
     E verificar se a API não permite o cadastro
+
+Cenário 03: Consultar os dados de um novo usuário
+    Dado criar um novo usuário
+    Quando cadastrar o usuário criado na ServeRest    ${EMAIL}    201
+    Então consultar os dados do novo usuário
+    E conferir os dados retornados

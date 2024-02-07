@@ -2,6 +2,7 @@
 Library    RequestsLibrary
 Library    FakerLibrary
 Library    Collections
+Library    Telnet
 
 *** Keywords ***
 Criar seção na ServeRest
@@ -36,6 +37,10 @@ Quando cadastrar o usuário criado na ServeRest
 
     Log            ${RESPONSE.json()}
 
+    IF    ${RESPONSE.status_code} == 201
+        Set Test Variable    ${USER_ID}   ${RESPONSE.json()["_id"]}
+    END
+
     Set Test Variable    ${RESULT}    ${RESPONSE.json()}
 
 Então conferir se o usuário foi cadastrado corretamente
@@ -52,3 +57,17 @@ E verificar se a API não permite o cadastro
     Dictionary Should Contain Item    ${RESULT}    
     ...                               message
     ...                               Este email já está sendo usado
+
+Então consultar os dados do novo usuário
+    ${CONSULT_RESPONSE}               GET On Session    
+    ...                               ServeRest    
+    ...                               /usuarios/${USER_ID}
+    Set Test Variable                 ${CONSULT_RESULT}    ${CONSULT_RESPONSE.json()}
+
+E conferir os dados retornados
+    Log                              ${CONSULT_RESULT}
+    Dictionary Should Contain Item   ${CONSULT_RESULT}    nome                 ${NAME}
+    Dictionary Should Contain Item   ${CONSULT_RESULT}    email                ${EMAIL}
+    Dictionary Should Contain Item   ${CONSULT_RESULT}    password             ${PASSWORD}
+    Dictionary Should Contain Item   ${CONSULT_RESULT}    administrador        true
+    Dictionary Should Contain Item   ${CONSULT_RESULT}    _id                  ${USER_ID}
