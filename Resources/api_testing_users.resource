@@ -18,12 +18,13 @@ Dado criar um novo usuário
     Set Test Variable     ${PASSWORD}    ${RANDOM_PASSWORD}
 
 Quando cadastrar o usuário criado na ServeRest
-    ${BODY}       Create Dictionary    
-    ...           nome=${NAME}    
-    ...           email=${EMAIL}    
-    ...           password=${PASSWORD}    
-    ...           administrador=true
-    Log           ${BODY}
+    [Arguments]    ${EMAIL}    ${EXPECTED_STATUS_CODE}
+    ${BODY}        Create Dictionary    
+    ...            nome=${NAME}    
+    ...            email=${EMAIL}    
+    ...            password=${PASSWORD}    
+    ...            administrador=true
+    Log            ${BODY}
 
     Criar seção na ServeRest
 
@@ -31,6 +32,7 @@ Quando cadastrar o usuário criado na ServeRest
     ...            alias=ServeRest
     ...            url=/usuarios
     ...            json=${BODY}
+    ...            expected_status=${EXPECTED_STATUS_CODE}
 
     Log            ${RESPONSE.json()}
 
@@ -42,3 +44,11 @@ Então conferir se o usuário foi cadastrado corretamente
     ...                               Cadastro realizado com sucesso
 
     Dictionary Should Contain Key     ${RESULT}    _id
+
+Então repetir o cadastro do usuário
+    Quando cadastrar o usuário criado na ServeRest    ${EMAIL}    400
+
+E verificar se a API não permite o cadastro
+    Dictionary Should Contain Item    ${RESULT}    
+    ...                               message
+    ...                               Este email já está sendo usado
