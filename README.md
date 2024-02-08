@@ -18,7 +18,7 @@ _Automation ServeRest_ permite o estudo de:
 Execute o seguinte comando no terminal:
 
 ```sh
-robot -d .\results Testing\api_testing_users.robot
+robot -d .\Results Testing\api_testing_users.robot
 ```
 
 <i>Após o termino do teste da suíte, abra o arquivo "log.html" para obter os dados.</i>
@@ -28,7 +28,7 @@ robot -d .\results Testing\api_testing_users.robot
 Para executar um caso de teste específico, execute o seguinte comando no terminal:
 
 ```sh
-robot -d .\results -t "{Nome Test Case}" Testing\api_testing_users.robot
+robot -d .\Results -t "{Nome Test Case}" Testing\api_testing_users.robot
 ```
 
 <i>Após o termino do teste da suíte, abra o arquivo "log.html" para obter os dados.</i>
